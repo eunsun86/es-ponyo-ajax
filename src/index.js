@@ -50,8 +50,15 @@ breeds.forEach(function (breed) {
  * 선택한 종을 event 객체에서 찾아서 fetchPhotoURL을 실행시키세요.
  *
  */
+var el = document.querySelector('ul');
 
+el.addEventListener("click", function (event) {
+    console.log(event.target)
+    console.log(event.currentTarget)
+    fetchPhotoURL(event.target.textContent);
+});
 
+// el[i].addEventListener("click", fetchPhotoURL(breeds[i]));
 
 
 /*
@@ -63,8 +70,18 @@ breeds.forEach(function (breed) {
  * 보너스: 한번 가져온 데이터는 다시 또 요청이 나가지 않도록 해주세요.
  */
 function fetchPhotoURL (breed) {
+    // console.log(arguments[0]);
     var apiURL = 'https://dog.ceo/api/breed/' + breed + '/images/random';
     $.get(apiURL, function (data) {
-        console.log('Success: ', data);
+        // console.log('Success: ', data);
+        var imgSrc = data.message;
+        imgBox.innerHTML = '<img src="' + imgSrc +'" alt="" />';
     });
 }
+
+var imgBox = document.createElement('div');
+document.body.appendChild(imgBox);
+
+
+
+
