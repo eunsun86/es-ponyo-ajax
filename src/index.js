@@ -53,12 +53,10 @@ breeds.forEach(function (breed) {
 var el = document.querySelector('ul');
 
 el.addEventListener("click", function (event) {
-    console.log(event.target)
-    console.log(event.currentTarget)
+    // console.log(event.target)
+    // console.log(event.currentTarget)
     fetchPhotoURL(event.target.textContent);
 });
-
-// el[i].addEventListener("click", fetchPhotoURL(breeds[i]));
 
 
 /*
@@ -69,14 +67,19 @@ el.addEventListener("click", function (event) {
  *
  * 보너스: 한번 가져온 데이터는 다시 또 요청이 나가지 않도록 해주세요.
  */
+var cache = {};
 function fetchPhotoURL (breed) {
-    // console.log(arguments[0]);
     var apiURL = 'https://dog.ceo/api/breed/' + breed + '/images/random';
-    $.get(apiURL, function (data) {
-        // console.log('Success: ', data);
-        var imgSrc = data.message;
-        imgBox.innerHTML = '<img src="' + imgSrc +'" alt="" />';
-    });
+    if (!cache[breed]) {
+        $.get(apiURL, function (data) {
+            var imgSrc = data.message;
+            imgBox.innerHTML = '<img src="' + imgSrc +'" alt="" />';
+            cache[breed] = imgSrc;
+        });
+    } else {
+        imgBox.innerHTML = '<img src="' + cache[breed] +'" alt="" />';
+    }
+    
 }
 
 var imgBox = document.createElement('div');
